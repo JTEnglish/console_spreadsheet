@@ -1,2 +1,2 @@
-# console_spreadsheet
-Simple console-based spreadsheet application
+# Console Spreadsheet
+Simple console-based spreadsheet application.
