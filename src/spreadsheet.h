@@ -11,10 +11,10 @@ using namespace std;
 
 class Sheet {
 public:
-  Sheet();
+  Sheet() {}
   ~Sheet();
 
-  bool read();
+  void read();
   void evaluate();
   void print();
 
