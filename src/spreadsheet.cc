@@ -6,6 +6,8 @@
 #include <vector>
 #include "spreadsheet.h"
 
+using namespace std;
+
 Sheet::Sheet() {
 
 }
