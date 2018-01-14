@@ -58,7 +58,7 @@ void Sheet::evaluate() {
         bool err = false;
         bool not_num = false;
 
-        string expr = make_vals_exp(cells[i][j], ref, err);
+        string expr = make_vals_exp(cells[i][j], ref, err, not_num);
 
         if (err) {
           cells[i][j] = "#ERROR";
@@ -100,7 +100,7 @@ string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err, bool &no
         }
 
         ref.push_back(var);
-        expr += get_val(var, ref, err);
+        expr += get_val(var, ref, err, not_num);
 
         i = var_end;
       }
@@ -140,7 +140,7 @@ string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num)
     return "";
   }
   else if (data[0] == '=') { //if expression, call vals expression function again
-    val = make_vals_exp(data, ref, err);
+    val = make_vals_exp(data, ref, err, not_num);
   }
   else {
     val = data;
