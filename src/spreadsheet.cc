@@ -98,7 +98,7 @@ string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err) {
         ref.push_back(var);
         expr += get_val(var, ref, err);
 
-        i = var_end + 1;
+        i = var_end;
       }
       else {
         expr += str[i];
@@ -127,7 +127,9 @@ string Sheet::get_val(string pos, vector<string> &ref, bool &err) {
   }
 
   //get data
-  string data = cells[alpha_col][num_row];
+  string data = cells[num_row][alpha_col];
+
+  cout << pos << " : " << data << endl;
 
   //if expression, call vals expression function again
   if (data[0] == '=') {
