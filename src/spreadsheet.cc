@@ -56,11 +56,15 @@ void Sheet::evaluate() {
       if (cells[i][j][0] == '=') {
         vector<string> ref;
         bool err = false;
+        bool not_num = false;
 
         string expr = make_vals_exp(cells[i][j], ref, err);
 
         if (err) {
           cells[i][j] = "#ERROR";
+        }
+        else if (not_num) {
+          cells[i][j] = "#NAN";
         }
         else {
           //evaluate string value expression
@@ -74,11 +78,11 @@ void Sheet::evaluate() {
 /********************
 *
 ********************/
-string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err) {
+string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err, bool &not_num) {
   cout << "MAKE_VALS_EXP" << endl;
   string expr = "";
 
-  if (!err) {
+  if (!err && !not_num) {
     //find vars and build value expression string
     for (int i = 1; i < str.length(); ++i) {
       if (isalpha(str[i])) { //var was found
@@ -111,7 +115,7 @@ string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err) {
 /********************
 *
 ********************/
-string Sheet::get_val(string pos, vector<string> &ref, bool &err) {
+string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num) {
   cout << "GET_VAL" << endl;
   string val = "";
   string row_pos = pos.substr(1, pos.length() - 1); //get row int
@@ -131,8 +135,11 @@ string Sheet::get_val(string pos, vector<string> &ref, bool &err) {
 
   cout << pos << " : " << data << endl;
 
-  //if expression, call vals expression function again
-  if (data[0] == '=') {
+  if (data == "") {
+    not_num = true;
+    return "";
+  }
+  else if (data[0] == '=') { //if expression, call vals expression function again
     val = make_vals_exp(data, ref, err);
   }
   else {
