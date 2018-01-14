@@ -20,6 +20,10 @@ public:
 
 private:
   vector<vector <string>> cells;
+
+  string make_vals_exp(string str, vector<string> &ref, bool &err);
+  string get_val(string pos, vector<string> &ref, bool &err);
+
 };
 
 #endif

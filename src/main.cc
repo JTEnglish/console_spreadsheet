@@ -10,7 +10,8 @@ using namespace std;
 int main() {
   Sheet s;
   s.read();
+  s.evaluate();
   s.print();
-  
+
   return 0;
 }
