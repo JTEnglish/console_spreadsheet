@@ -23,6 +23,7 @@ private:
 
   string make_vals_exp(string str, vector<string> &ref, bool &err, bool &not_num);
   string get_val(string pos, vector<string> &ref, bool &err, bool &not_num);
+  string evaluate_str_exp(string expr);
 
 };
 

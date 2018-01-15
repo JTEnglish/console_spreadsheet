@@ -10,8 +10,10 @@ using namespace std;
 int main() {
   Sheet s;
   s.read();
+  s.print(); //print before evaluation
+  cout << endl;
   s.evaluate();
-  s.print();
+  s.print(); //print result
 
   return 0;
 }

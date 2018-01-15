@@ -8,8 +8,8 @@ spreadsheet.o: spreadsheet.cc spreadsheet.h
 main.o: main.cc
 	$(CC) main.cc -c $(INCS)
 
-app: main.o spreadsheet.o
-	$(CC) main.o spreadsheet.o $(INCS) $(LDLIBS) -o app
+app: spreadsheet.o main.o
+	$(CC) spreadsheet.o main.o $(INCS) $(LDLIBS) -o app
 
 clean:
-	rm main.o spreadsheet.o app
+	rm *.o app

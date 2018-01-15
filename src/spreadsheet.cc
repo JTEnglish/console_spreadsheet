@@ -22,7 +22,6 @@ Sheet::~Sheet() {
 *
 ********************/
 void Sheet::read() {
-  cout << "READ" << endl;
   string line = "";
 
   while (getline(cin, line)) { //read each line
@@ -49,7 +48,6 @@ void Sheet::read() {
 *
 ********************/
 void Sheet::evaluate() {
-  cout << "EVALUATE" << endl;
   for (int i = 0; i < cells.size(); ++i) {
     for (int j = 0; j < cells[i].size(); ++j) {
       //check if expression is found
@@ -67,8 +65,8 @@ void Sheet::evaluate() {
           cells[i][j] = "#NAN";
         }
         else {
-          //evaluate string value expression
-          cells[i][j] = expr;
+          //evaluate string value expression using tinyexpr
+          cells[i][j] = evaluate_str_exp(expr);
         }
       }
     }
@@ -79,7 +77,6 @@ void Sheet::evaluate() {
 *
 ********************/
 string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err, bool &not_num) {
-  cout << "MAKE_VALS_EXP" << endl;
   string expr = "";
 
   if (!err && !not_num) {
@@ -116,7 +113,6 @@ string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err, bool &no
 *
 ********************/
 string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num) {
-  cout << "GET_VAL" << endl;
   string val = "";
   string row_pos = pos.substr(1, pos.length() - 1); //get row int
 
@@ -132,8 +128,6 @@ string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num)
 
   //get data
   string data = cells[num_row][alpha_col];
-
-  cout << pos << " : " << data << endl;
 
   if (data == "") {
     not_num = true;
@@ -152,8 +146,74 @@ string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num)
 /********************
 *
 ********************/
+string Sheet::evaluate_str_exp(string expr) {
+  vector<int> params;
+  vector<char> operators;
+
+  //remove spaces
+  string tmp = "";
+  for (int i = 0; i < expr.length(); ++i) {
+    if (expr[i] != ' ') {
+      tmp += expr[i];
+    }
+  }
+  expr = tmp;
+
+  //populate param and operator vectors
+  for (int i = 0; i < expr.length(); ++i) {
+    string tmp_num = "";
+    for (int j = i; isdigit(expr[j]); ++j) {
+      tmp_num += expr[j];
+      ++i;
+    }
+    params.push_back(atoi(tmp_num.c_str()));
+    operators.push_back(expr[i]);
+  }
+
+  //do mult. and div. first
+  for (int i = 0; i < operators.size(); ++i) {
+    if ((operators[i] == '*') || (operators[i] == '/')) {
+      for (int j = 0; j < params.size(); ++j) { //copy into resized vector
+        if (j == i) { //do operation
+          if (operators[i] == '*') {
+            params[j] = params[j] * params[j + 1];
+          }
+          else { //operator == '/'
+            params[j] = params[j] / params[j + 1];
+          }
+          params.erase(params.begin() + j + 1); //erase params[j + 1]
+          ++j;
+        }
+      }
+    }
+  }
+
+  //do ad. and sub.
+  for (int i = 0; i < operators.size(); ++i) {
+    if ((operators[i] == '+') || (operators[i] == '-')) {
+      for (int j = 0; j < params.size(); ++j) { //copy into resized vector
+        if (j == i) { //do operation
+          if (operators[i] == '+') {
+            params[j] = params[j] + params[j + 1];
+          }
+          else { //operator == '-'
+            params[j] = params[j] - params[j + 1];
+          }
+          params.erase(params.begin() + j + 1); //erase params[j + 1]
+          ++j;
+        }
+      }
+    }
+  }
+
+  return to_string(params[0]);
+}
+
+
+/********************
+*
+********************/
 void Sheet::print() {
-  cout << "PRINT" << endl;
   for (int i = 0; i < cells.size(); ++i) {
     for (int j = 0; j < cells[i].size(); ++j) {
       cout << cells[i][j] << "\t";
