@@ -185,36 +185,26 @@ string Sheet::evaluate_str_exp(string expr) {
   //do mult. and div. first
   for (int i = 0; i < operators.size(); ++i) {
     if ((operators[i] == '*') || (operators[i] == '/')) {
-      for (int j = 0; j < params.size(); ++j) { //copy into resized vector
-        if (j == i) { //do operation
-          if (operators[i] == '*') {
-            params[j] = params[j] * params[j + 1];
-          }
-          else { //operator == '/'
-            params[j] = params[j] / params[j + 1];
-          }
-          params.erase(params.begin() + j + 1); //erase params[j + 1]
-          ++j;
-        }
+      if (operators[i] == '*') {
+        params[i] = params[i] * params[i + 1];
       }
+      else { //operator == '/'
+        params[i] = params[i] / params[i + 1];
+      }
+      params.erase(params.begin() + i + 1); //erase params[i + 1]
     }
   }
 
   //do ad. and sub.
   for (int i = 0; i < operators.size(); ++i) {
     if ((operators[i] == '+') || (operators[i] == '-')) {
-      for (int j = 0; j < params.size(); ++j) { //copy into resized vector
-        if (j == i) { //do operation
-          if (operators[i] == '+') {
-            params[j] = params[j] + params[j + 1];
-          }
-          else { //operator == '-'
-            params[j] = params[j] - params[j + 1];
-          }
-          params.erase(params.begin() + j + 1); //erase params[j + 1]
-          ++j;
-        }
+      if (operators[i] == '+') {
+        params[i] = params[i] + params[i + 1];
       }
+      else { //operator == '-'
+        params[i] = params[i] - params[i + 1];
+      }
+      params.erase(params.begin() + i + 1); //erase params[i + 1]
     }
   }
 
