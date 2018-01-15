@@ -1,6 +1,7 @@
-/********************
-*
-********************/
+/****************************************
+* spreadsheet.cc
+*   source file for spreadsheet class
+****************************************/
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,16 +12,18 @@
 
 using namespace std;
 
-/********************
-*
-********************/
+/****************************************
+* ~Sheet
+*   deconstructor
+****************************************/
 Sheet::~Sheet() {
   cells.clear();
 }
 
-/********************
-*
-********************/
+/****************************************
+* read
+*   reads in cells to vector
+****************************************/
 void Sheet::read() {
   string line = "";
 
@@ -44,9 +47,12 @@ void Sheet::read() {
   }
 }
 
-/********************
-*
-********************/
+/****************************************
+* evaluate
+*   iterates over each cell,
+*   changes value to expression result
+*   if present
+****************************************/
 void Sheet::evaluate() {
   for (int i = 0; i < cells.size(); ++i) {
     for (int j = 0; j < cells[i].size(); ++j) {
@@ -73,9 +79,11 @@ void Sheet::evaluate() {
   }
 }
 
-/********************
-*
-********************/
+/****************************************
+* make_vals_exp
+*   changes expression variables to
+*   literal value and returns the string
+****************************************/
 string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err, bool &not_num) {
   string expr = "";
 
@@ -109,9 +117,10 @@ string Sheet::make_vals_exp(string str, vector<string> &ref, bool &err, bool &no
   return expr;
 }
 
-/********************
-*
-********************/
+/****************************************
+* get_val
+*   gets the value for a referenced cell
+****************************************/
 string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num) {
   string val = "";
   string row_pos = pos.substr(1, pos.length() - 1); //get row int
@@ -143,9 +152,12 @@ string Sheet::get_val(string pos, vector<string> &ref, bool &err, bool &not_num)
   return val;
 }
 
-/********************
-*
-********************/
+/****************************************
+* evaluate_str_exp
+*   takes a string expression with
+*   literal values and returns the result
+*   of the math done
+****************************************/
 string Sheet::evaluate_str_exp(string expr) {
   vector<int> params;
   vector<char> operators;
@@ -210,9 +222,10 @@ string Sheet::evaluate_str_exp(string expr) {
 }
 
 
-/********************
-*
-********************/
+/****************************************
+* print
+*   prints the values in the cells
+****************************************/
 void Sheet::print() {
   for (int i = 0; i < cells.size(); ++i) {
     for (int j = 0; j < cells[i].size(); ++j) {

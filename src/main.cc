@@ -1,6 +1,8 @@
-/********************
-*
-********************/
+/****************************************
+* main.cc
+*   source file for running the
+*   spreadsheet application
+****************************************/
 #include <iostream>
 #include <string>
 #include "spreadsheet.h"
